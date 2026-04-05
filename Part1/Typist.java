@@ -7,16 +7,16 @@
  * It is not optional. Good luck.
  *
  * @author Jack Bew
- * @version 1.1 ~ Constructor Added
+ * @version 1.2 ~ Added Typist Methods
  */
 public class Typist
 {
-    String typistName;
-    char typistSymbol;
-    int typistProgress; //needs default value
-    boolean typistBurntOut = false;
-    int typistBurnoutRemaining; //needs default value
-    double typistAccuracy; 
+    private String typistName;
+    private char typistSymbol;
+    private int typistProgress; //needs default value
+    private boolean typistBurntOut = false;
+    private int typistBurnoutRemaining = 0; 
+    private double typistAccuracy; 
     // Fields of class Typist
     // Hint: you will need six fields. Think carefully about their types.
     // One of them tracks how far along the passage the typist has reached.
@@ -40,7 +40,7 @@ public class Typist
     {
         this.typistSymbol = typistSymbol;
         this.typistName = typistName;
-        this.typistAccuracy = typistAccuracy;
+        setAccuracy(typistAccuracy);
     }
 
 
@@ -54,7 +54,9 @@ public class Typist
      */
     public void burnOut(int turns)
     {
-
+        if(turns<=0){return;}
+        typistBurntOut = true;
+        typistBurnoutRemaining = turns;
     }
 
     /**
@@ -64,7 +66,14 @@ public class Typist
      */
     public void recoverFromBurnout()
     {
+        if (!typistBurntOut){return;}
 
+        typistBurnoutRemaining --;
+
+        if(typistBurnoutRemaining <=0){
+            typistBurnoutRemaining = 0;
+            typistBurntOut = false;
+        }
     }
 
     /**
@@ -74,7 +83,7 @@ public class Typist
      */
     public double getAccuracy()
     {
-        return 0.0; // placeholder - replace with correct implementation
+        return typistAccuracy; 
     }
 
     /**
@@ -86,7 +95,7 @@ public class Typist
      */
     public int getProgress()
     {
-        return 0; // placeholder - replace with correct implementation
+        return typistProgress; 
     }
 
     /**
@@ -96,7 +105,7 @@ public class Typist
      */
     public String getName()
     {
-        return ""; // placeholder - replace with correct implementation
+        return typistName; 
     }
 
     /**
@@ -106,7 +115,7 @@ public class Typist
      */
     public char getSymbol()
     {
-        return ' '; // placeholder - replace with correct implementation
+        return typistSymbol;
     }
 
     /**
@@ -117,7 +126,8 @@ public class Typist
      */
     public int getBurnoutTurnsRemaining()
     {
-        return 0; // placeholder - replace with correct implementation
+        if(typistBurnoutRemaining <=0){return 0;}
+        return typistBurnoutRemaining;
     }
 
     /**
@@ -126,7 +136,9 @@ public class Typist
      */
     public void resetToStart()
     {
-
+        typistProgress = 0;
+        typistBurnoutRemaining = 0;
+        typistBurntOut = false;
     }
 
     /**
@@ -136,7 +148,7 @@ public class Typist
      */
     public boolean isBurntOut()
     {
-        return false; // placeholder - replace with correct implementation
+        return typistBurntOut;
     }
 
     /**
@@ -145,7 +157,8 @@ public class Typist
      */
     public void typeCharacter()
     {
-
+        if(typistBurntOut){return;}
+        typistProgress++;
     }
 
     /**
@@ -156,7 +169,9 @@ public class Typist
      */
     public void slideBack(int amount)
     {
-
+        if(amount<=0){return;}
+        if(typistProgress - amount <0){typistProgress = 0;}
+        else{typistProgress -= amount;}
     }
 
     /**
@@ -167,7 +182,9 @@ public class Typist
      */
     public void setAccuracy(double newAccuracy)
     {
-
+        if(newAccuracy<0.0){typistAccuracy = 0.0;}
+        else if(newAccuracy>1.0){typistAccuracy = 1.0;}
+        else{typistAccuracy = newAccuracy;}
     }
 
     /**
@@ -177,7 +194,7 @@ public class Typist
      */
     public void setSymbol(char newSymbol)
     {
-
+        typistSymbol = newSymbol;
     }
 
 }
