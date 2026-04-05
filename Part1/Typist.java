@@ -6,11 +6,17 @@
  * He left a sticky note: "the slide-back thing is optional probably".
  * It is not optional. Good luck.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Jack Bew
+ * @version 1.1 ~ Constructor Added
  */
 public class Typist
 {
+    String typistName;
+    char typistSymbol;
+    int typistProgress; //needs default value
+    boolean typistBurntOut = false;
+    int typistBurnoutRemaining; //needs default value
+    double typistAccuracy; 
     // Fields of class Typist
     // Hint: you will need six fields. Think carefully about their types.
     // One of them tracks how far along the passage the typist has reached.
@@ -32,7 +38,9 @@ public class Typist
      */
     public Typist(char typistSymbol, String typistName, double typistAccuracy)
     {
-
+        this.typistSymbol = typistSymbol;
+        this.typistName = typistName;
+        this.typistAccuracy = typistAccuracy;
     }
 
 
