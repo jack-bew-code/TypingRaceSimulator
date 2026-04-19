@@ -13,7 +13,7 @@ public class Typist
 {
     private String typistName;
     private char typistSymbol;
-    private int typistProgress; //needs default value
+    private int typistProgress;
     private boolean typistBurntOut = false;
     private int typistBurnoutRemaining = 0; 
     private double typistAccuracy; 
