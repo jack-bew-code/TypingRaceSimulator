@@ -175,9 +175,7 @@ public class TypingRace
         {
             theTypist.typeCharacter();
         }
-
-        // Mistype check — the probability should reflect the typist's accuracy
-        if (Math.random() < (1.0 - theTypist.getAccuracy()) * MISTYPE_BASE_CHANCE)
+        else if (Math.random() < (1.0 - theTypist.getAccuracy()) * MISTYPE_BASE_CHANCE)// Mistype check — the probability should reflect the typist's accuracy
         {
             theTypist.slideBack(SLIDE_BACK_AMOUNT);
         }
