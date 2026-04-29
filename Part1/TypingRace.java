@@ -112,16 +112,35 @@ public class TypingRace
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (Exception e) {}
         }
-        
-        if(raceFinishedBy(seat1Typist)){
+
+        if (raceFinishedBy(seat1Typist) && raceFinishedBy(seat2Typist) && raceFinishedBy(seat3Typist))
+        {
+            System.out.println("Its a 3 way tie!");
+        }    
+        else if (raceFinishedBy(seat1Typist) && raceFinishedBy(seat3Typist))
+        {
+            System.out.println("It's a tie between " + seat1Typist.getName() + " and " + seat3Typist.getName() + ".");
+        }
+        else if (raceFinishedBy(seat2Typist) && raceFinishedBy(seat3Typist))
+        {
+            System.out.println("It's a tie between " + seat2Typist.getName() + " and " + seat3Typist.getName() + ".");
+        }
+        else if (raceFinishedBy(seat1Typist) && raceFinishedBy(seat2Typist))
+        {
+            System.out.println("It's a tie between " + seat1Typist.getName() + " and " + seat2Typist.getName() + ".");
+        }
+        else if (raceFinishedBy(seat1Typist))
+        {
             System.out.println("And the winner is..... "+seat1Typist.getName()+"!");
             System.out.println("Final Accuracy: "+seat1Typist.getAccuracy()+" (Improved from "+startAcc1+")");
         }
-        else if(raceFinishedBy(seat2Typist)){
+        else if (raceFinishedBy(seat2Typist))
+        {
             System.out.println("And the winner is..... "+seat2Typist.getName()+"!");
             System.out.println("Final Accuracy: "+seat2Typist.getAccuracy()+" (Improved from "+startAcc2+")");
         }
-        else if(raceFinishedBy(seat3Typist)){
+        else if (raceFinishedBy(seat3Typist))
+        {
             System.out.println("And the winner is..... "+seat3Typist.getName()+"!");
             System.out.println("Final Accuracy: "+seat3Typist.getAccuracy()+" (Improved from "+startAcc3+")");
         }
