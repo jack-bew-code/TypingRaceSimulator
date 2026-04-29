@@ -1,5 +1,4 @@
 import java.util.concurrent.TimeUnit;
-import java.lang.Math;
 
 /**
  * A typing race simulation. Three typists race to complete a passage of text,
@@ -9,12 +8,12 @@ import java.lang.Math;
  * two-finger technique". He assured us the code was "basically done".
  * We have found evidence to the contrary.
  *
- * @author TyPosaurus
- * @version 0.7 (the other 0.3 is left as an exercise for the reader)
+ * @author TyPosaurus + Jack Bew
+ * @version 0.8 (the other 0.3 is left as an exercise for the reader) ~ Prints the winner at the end of the race
  */
 public class TypingRace
 {
-    private int passageLength;   // Total characters in the passage to type
+    private final int passageLength;   // Total characters in the passage to type
     private Typist seat1Typist;
     private Typist seat2Typist;
     private Typist seat3Typist;
@@ -78,10 +77,15 @@ public class TypingRace
     {
         boolean finished = false;
 
+        double startAcc1 = seat1Typist.getAccuracy();
+        double startAcc2 = seat2Typist.getAccuracy();
+        double startAcc3 = seat3Typist.getAccuracy();
+
         // Reset all typists to the start of the passage
         // (Ty was in a hurry here)
         seat1Typist.resetToStart();
         seat2Typist.resetToStart();
+        seat3Typist.resetToStart();
 
         while (!finished)
         {
@@ -105,9 +109,18 @@ public class TypingRace
             } catch (Exception e) {}
         }
 
-        // TODO (Task 2a): Print the winner's name here
-
-    
+        if(raceFinishedBy(seat1Typist)){
+            System.out.println("And the winner is..... "+seat1Typist.getName()+"!");
+            System.out.println("Final Accuracy: "+seat1Typist.getAccuracy()+" (Improved from "+startAcc1+")");
+        }
+        else if(raceFinishedBy(seat2Typist)){
+            System.out.println("And the winner is..... "+seat2Typist.getName()+"!");
+            System.out.println("Final Accuracy: "+seat2Typist.getAccuracy()+" (Improved from "+startAcc2+")");
+        }
+        else if(raceFinishedBy(seat3Typist)){
+            System.out.println("And the winner is..... "+seat3Typist.getName()+"!");
+            System.out.println("Final Accuracy: "+seat3Typist.getAccuracy()+" (Improved from "+startAcc3+")");
+        }
     }
 
     /**
