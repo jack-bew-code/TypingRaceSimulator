@@ -77,6 +77,9 @@ public class TypingRace
     {
         boolean finished = false;
         
+        if (seat1Typist == null || seat2Typist == null || seat3Typist == null) {
+            throw new IllegalStateException("Cannot start race: Not all typists are assigned to seats.");
+        }
 
         double startAcc1 = seat1Typist.getAccuracy();
         double startAcc2 = seat2Typist.getAccuracy();

@@ -11,7 +11,7 @@
  */
 public class Typist
 {
-    private String typistName;
+    private final String TYPISTNAME;
     private char typistSymbol;
     private int typistProgress;
     private boolean typistBurntOut = false;
@@ -33,13 +33,13 @@ public class Typist
      * Creates a new typist with a given symbol, name, and accuracy rating.
      *
      * @param typistSymbol  a single Unicode character representing this typist (e.g. '①', '②', '③')
-     * @param typistName    the name of the typist (e.g. "TURBOFINGERS")
+     * @param TYPISTNAME    the name of the typist (e.g. "TURBOFINGERS")
      * @param typistAccuracy the typist's accuracy rating, between 0.0 and 1.0
      */
-    public Typist(char typistSymbol, String typistName, double typistAccuracy)
+    public Typist(char typistSymbol, String TYPISTNAME, double typistAccuracy)
     {
         this.typistSymbol = typistSymbol;
-        this.typistName = typistName;
+        this.TYPISTNAME = TYPISTNAME;
         setAccuracy(typistAccuracy);
     }
 
@@ -105,7 +105,7 @@ public class Typist
      */
     public String getName()
     {
-        return typistName; 
+        return TYPISTNAME; 
     }
 
     /**
