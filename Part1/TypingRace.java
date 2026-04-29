@@ -132,18 +132,20 @@ public class TypingRace
         else if (raceFinishedBy(seat1Typist))
         {
             System.out.println("And the winner is..... "+seat1Typist.getName()+"!");
-            System.out.println("Final Accuracy: "+seat1Typist.getAccuracy()+" (Improved from "+startAcc1+")");
         }
         else if (raceFinishedBy(seat2Typist))
         {
             System.out.println("And the winner is..... "+seat2Typist.getName()+"!");
-            System.out.println("Final Accuracy: "+seat2Typist.getAccuracy()+" (Improved from "+startAcc2+")");
         }
         else if (raceFinishedBy(seat3Typist))
         {
             System.out.println("And the winner is..... "+seat3Typist.getName()+"!");
-            System.out.println("Final Accuracy: "+seat3Typist.getAccuracy()+" (Improved from "+startAcc3+")");
         }
+
+        System.out.println("--------------Accuracy  Statistics--------------");
+        System.out.println(seat1Typist.getName() + "Final Accuracy: " + seat1Typist.getAccuracy()+" (Improved from "+startAcc1+")");
+        System.out.println(seat2Typist.getName() + "Final Accuracy: " + seat2Typist.getAccuracy()+" (Improved from "+startAcc2+")");
+        System.out.println(seat3Typist.getName() + "Final Accuracy: " + seat3Typist.getAccuracy()+" (Improved from "+startAcc3+")");
     }
 
     /**
