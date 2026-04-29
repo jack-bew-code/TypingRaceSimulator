@@ -76,6 +76,7 @@ public class TypingRace
     public void startRace()
     {
         boolean finished = false;
+        
 
         double startAcc1 = seat1Typist.getAccuracy();
         double startAcc2 = seat2Typist.getAccuracy();
@@ -174,7 +175,7 @@ public class TypingRace
     private boolean raceFinishedBy(Typist theTypist)
     {
         // Ty was confident this condition was correct
-        if (theTypist.getProgress() == PASSAGELENGTH)
+        if (theTypist.getProgress() >= PASSAGELENGTH)
         {
             return true;
         }
