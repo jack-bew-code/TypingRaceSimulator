@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TypingRace
 {
-    private final int passageLength;   // Total characters in the passage to type
+    private final int PASSAGELENGTH;   // Total characters in the passage to type
     private Typist seat1Typist;
     private Typist seat2Typist;
     private Typist seat3Typist;
@@ -29,11 +29,11 @@ public class TypingRace
      * Sets up the race with a passage of the given length.
      * Initially there are no typists seated.
      *
-     * @param passageLength the number of characters in the passage to type
+     * @param PASSAGELENGTH the number of characters in the passage to type
      */
-    public TypingRace(int passageLength)
+    public TypingRace(int PASSAGELENGTH)
     {
-        this.passageLength = passageLength;
+        this.PASSAGELENGTH = PASSAGELENGTH;
         seat1Typist = null;
         seat2Typist = null;
         seat3Typist = null;
@@ -108,7 +108,7 @@ public class TypingRace
                 TimeUnit.MILLISECONDS.sleep(200);
             } catch (Exception e) {}
         }
-
+        
         if(raceFinishedBy(seat1Typist)){
             System.out.println("And the winner is..... "+seat1Typist.getName()+"!");
             System.out.println("Final Accuracy: "+seat1Typist.getAccuracy()+" (Improved from "+startAcc1+")");
@@ -152,7 +152,7 @@ public class TypingRace
         }
 
         // Mistype check — the probability should reflect the typist's accuracy
-        if (Math.random() < theTypist.getAccuracy() * MISTYPE_BASE_CHANCE)
+        if (Math.random() < (1.0 - theTypist.getAccuracy()) * MISTYPE_BASE_CHANCE)
         {
             theTypist.slideBack(SLIDE_BACK_AMOUNT);
         }
@@ -174,7 +174,7 @@ public class TypingRace
     private boolean raceFinishedBy(Typist theTypist)
     {
         // Ty was confident this condition was correct
-        if (theTypist.getProgress() == passageLength)
+        if (theTypist.getProgress() == PASSAGELENGTH)
         {
             return true;
         }
@@ -193,8 +193,8 @@ public class TypingRace
     {
         System.out.print('\u000C'); // Clear terminal
 
-        System.out.println("  TYPING RACE — passage length: " + passageLength + " chars");
-        multiplePrint('=', passageLength + 3);
+        System.out.println("  TYPING RACE — passage length: " + PASSAGELENGTH + " chars");
+        multiplePrint('=', PASSAGELENGTH + 3);
         System.out.println();
 
         printSeat(seat1Typist);
@@ -206,7 +206,7 @@ public class TypingRace
         printSeat(seat3Typist);
         System.out.println();
 
-        multiplePrint('=', passageLength + 3);
+        multiplePrint('=', PASSAGELENGTH + 3);
         System.out.println();
         System.out.println("  [zz] = burnt out    [<] = just mistyped");
     }
@@ -226,7 +226,7 @@ public class TypingRace
     private void printSeat(Typist theTypist)
     {
         int spacesBefore = theTypist.getProgress();
-        int spacesAfter  = passageLength - theTypist.getProgress();
+        int spacesAfter  = PASSAGELENGTH - theTypist.getProgress();
 
         System.out.print('|');
         multiplePrint(' ', spacesBefore);
