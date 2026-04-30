@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  * We have found evidence to the contrary.
  *
  * @author TyPosaurus + Jack Bew
- * @version 0.8 (the other 0.3 is left as an exercise for the reader) ~ Prints the winner at the end of the race
+ * @version 1.0
  */
 public class TypingRace
 {
@@ -23,6 +23,8 @@ public class TypingRace
     private static final double MISTYPE_BASE_CHANCE = 0.3;
     private static final int    SLIDE_BACK_AMOUNT   = 2;
     private static final int    BURNOUT_DURATION     = 3;
+    private static final double WIN_ACCURACY_BONUS = 0.02;
+    private static final double BURNOUT_ACCURACY_LOSS = 0.01;
 
     /**
      * Constructor for objects of class TypingRace.
@@ -116,36 +118,48 @@ public class TypingRace
         if (raceFinishedBy(seat1Typist) && raceFinishedBy(seat2Typist) && raceFinishedBy(seat3Typist))
         {
             System.out.println("Its a 3 way tie!");
+            seat1Typist.setAccuracy(seat1Typist.getAccuracy()+WIN_ACCURACY_BONUS);
+            seat2Typist.setAccuracy(seat2Typist.getAccuracy()+WIN_ACCURACY_BONUS);
+            seat3Typist.setAccuracy(seat3Typist.getAccuracy()+WIN_ACCURACY_BONUS);
         }    
         else if (raceFinishedBy(seat1Typist) && raceFinishedBy(seat3Typist))
         {
             System.out.println("It's a tie between " + seat1Typist.getName() + " and " + seat3Typist.getName() + ".");
+            seat1Typist.setAccuracy(seat1Typist.getAccuracy()+WIN_ACCURACY_BONUS);
+            seat3Typist.setAccuracy(seat3Typist.getAccuracy()+WIN_ACCURACY_BONUS);
         }
         else if (raceFinishedBy(seat2Typist) && raceFinishedBy(seat3Typist))
         {
             System.out.println("It's a tie between " + seat2Typist.getName() + " and " + seat3Typist.getName() + ".");
+            seat2Typist.setAccuracy(seat2Typist.getAccuracy()+WIN_ACCURACY_BONUS);
+            seat3Typist.setAccuracy(seat3Typist.getAccuracy()+WIN_ACCURACY_BONUS);
         }
         else if (raceFinishedBy(seat1Typist) && raceFinishedBy(seat2Typist))
         {
             System.out.println("It's a tie between " + seat1Typist.getName() + " and " + seat2Typist.getName() + ".");
+            seat1Typist.setAccuracy(seat1Typist.getAccuracy()+WIN_ACCURACY_BONUS);
+            seat2Typist.setAccuracy(seat2Typist.getAccuracy()+WIN_ACCURACY_BONUS);
         }
         else if (raceFinishedBy(seat1Typist))
         {
             System.out.println("And the winner is..... "+seat1Typist.getName()+"!");
+            seat1Typist.setAccuracy(seat1Typist.getAccuracy()+WIN_ACCURACY_BONUS);
         }
         else if (raceFinishedBy(seat2Typist))
         {
             System.out.println("And the winner is..... "+seat2Typist.getName()+"!");
+            seat2Typist.setAccuracy(seat2Typist.getAccuracy()+WIN_ACCURACY_BONUS);
         }
         else if (raceFinishedBy(seat3Typist))
         {
             System.out.println("And the winner is..... "+seat3Typist.getName()+"!");
+            seat3Typist.setAccuracy(seat3Typist.getAccuracy()+WIN_ACCURACY_BONUS);
         }
 
         System.out.println("--------------Accuracy  Statistics--------------");
-        System.out.println(seat1Typist.getName() + "Final Accuracy: " + seat1Typist.getAccuracy()+" (Improved from "+startAcc1+")");
-        System.out.println(seat2Typist.getName() + "Final Accuracy: " + seat2Typist.getAccuracy()+" (Improved from "+startAcc2+")");
-        System.out.println(seat3Typist.getName() + "Final Accuracy: " + seat3Typist.getAccuracy()+" (Improved from "+startAcc3+")");
+        System.out.println(seat1Typist.getName() + "Final Accuracy: " + String.format("%.2f",seat1Typist.getAccuracy())+" (Changed from "+String.format("%.2f",startAcc1)+")");
+        System.out.println(seat2Typist.getName() + "Final Accuracy: " + String.format("%.2f",seat2Typist.getAccuracy())+" (Changed from "+String.format("%.2f",startAcc2)+")");
+        System.out.println(seat3Typist.getName() + "Final Accuracy: " + String.format("%.2f",seat3Typist.getAccuracy())+" (Changed from "+String.format("%.2f",startAcc3)+")");
     }
 
     /**
@@ -188,6 +202,7 @@ public class TypingRace
         if (Math.random() < 0.05 * theTypist.getAccuracy() * theTypist.getAccuracy())
         {
             theTypist.burnOut(BURNOUT_DURATION);
+            theTypist.setAccuracy(theTypist.getAccuracy()-BURNOUT_ACCURACY_LOSS);
         }
     }
 
@@ -279,13 +294,13 @@ public class TypingRace
         if (theTypist.isBurntOut())
         {
             System.out.print(theTypist.getName()
-                + " (Accuracy: " + theTypist.getAccuracy() + ")"
+                + " (Accuracy: " + String.format("%.2f",theTypist.getAccuracy()) + ")"
                 + " BURNT OUT (" + theTypist.getBurnoutTurnsRemaining() + " turns)");
         }
         else
         {
             System.out.print(theTypist.getName()
-                + " (Accuracy: " + theTypist.getAccuracy() + ")");
+                + " (Accuracy: " + String.format("%.2f",theTypist.getAccuracy()) + ")");
         }
     }
 
