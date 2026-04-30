@@ -17,6 +17,7 @@ public class Typist
     private boolean typistBurntOut = false;
     private int typistBurnoutRemaining = 0; 
     private double typistAccuracy; 
+    private boolean justMistyped = false;
     // Fields of class Typist
     // Hint: you will need six fields. Think carefully about their types.
     // One of them tracks how far along the passage the typist has reached.
@@ -130,6 +131,17 @@ public class Typist
         return typistBurnoutRemaining;
     }
 
+    //creates a flag for if the user has mistyped
+    public boolean getJustMistyped()
+    {
+        return justMistyped;
+    }
+
+    public void setJustMistyped(boolean value)
+    {
+        justMistyped = value;
+    }
+
     /**
      * Resets the typist to their initial state, ready for a new race.
      * Progress returns to zero, burnout is cleared entirely.
@@ -139,6 +151,7 @@ public class Typist
         typistProgress = 0;
         typistBurnoutRemaining = 0;
         typistBurntOut = false;
+        justMistyped = false;
     }
 
     /**

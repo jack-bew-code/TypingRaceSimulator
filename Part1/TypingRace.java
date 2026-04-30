@@ -170,6 +170,8 @@ public class TypingRace
             return;
         }
 
+        theTypist.setJustMistyped(false);
+
         // Attempt to type a character
         if (Math.random() < theTypist.getAccuracy())
         {
@@ -178,6 +180,7 @@ public class TypingRace
         else if (Math.random() < (1.0 - theTypist.getAccuracy()) * MISTYPE_BASE_CHANCE)// Mistype check — the probability should reflect the typist's accuracy
         {
             theTypist.slideBack(SLIDE_BACK_AMOUNT);
+            theTypist.setJustMistyped(true);
         }
 
         // Burnout check — pushing too hard increases burnout risk
@@ -259,8 +262,13 @@ public class TypingRace
         System.out.print(theTypist.getSymbol());
         if (theTypist.isBurntOut())
         {
-            System.out.print('~');
-            spacesAfter--; // symbol + ~ together take two characters
+            System.out.print("[zz]");
+            spacesAfter= spacesAfter-4; 
+        }
+        else if (theTypist.getJustMistyped())
+        {
+            System.out.print("[<]");
+            spacesAfter=spacesAfter-3;
         }
 
         multiplePrint(' ', spacesAfter);
