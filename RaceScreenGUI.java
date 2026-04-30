@@ -38,5 +38,17 @@ public class RaceScreenGUI {
         else if (choice.equals("Medium Passage")) return "The sun set over the quiet town, and the streets began to glow with warm light. A soft breeze moved through the trees, and the evening felt calm and peaceful.";
         return "The sun set over the quiet town, and the streets began to glow with warm light. A soft breeze moved through the trees, carrying the sound of distant voices and footsteps. In the park, the last few birds settled into the branches while the lamps slowly flickered on. The evening felt calm and peaceful, as if the whole town had paused for a moment to enjoy the fading light.";
     }
+
+    public void updateTextHighlighting(int progress, Color highlightColor){
+        Style defaultStyle = textPane.addStyle("Default", null);
+        StyleConstants.setForeground(defaultStyle, Color.BLACK);
+
+        doc.setCharacterAttributes(0, doc.getLength(), defaultStyle, true);
+
+        Style completedStyle = textPane.addStyle("Completed", null);
+        StyleConstants.setForeground(completedStyle, highlightColor); 
+
+        int safeProgress = Math.min(progress, doc.getLength());
+        doc.setCharacterAttributes(0, safeProgress, completedStyle, false);
+    }
 }
-5
