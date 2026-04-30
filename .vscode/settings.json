@@ -1,0 +1,7 @@
+{
+  "java.project.sourcePaths": [
+    "."
+  ],
+  "java.project.outputPath": "bin",
+  "java.debug.settings.console": "integratedTerminal"
+}
