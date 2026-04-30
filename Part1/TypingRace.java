@@ -18,6 +18,8 @@ public class TypingRace
     private Typist seat2Typist;
     private Typist seat3Typist;
 
+    private int turnsElapsed = 0;
+
     // Accuracy thresholds for mistype and burnout events
     // (Ty tuned these values "by feel". They may need adjustment.)
     private static final double MISTYPE_BASE_CHANCE = 0.3;
@@ -78,6 +80,7 @@ public class TypingRace
     public void startRace()
     {
         boolean finished = false;
+        turnsElapsed = 0;
         
         if (seat1Typist == null || seat2Typist == null || seat3Typist == null) {
             throw new IllegalStateException("Cannot start race: Not all typists are assigned to seats.");
@@ -99,6 +102,8 @@ public class TypingRace
             advanceTypist(seat1Typist);
             advanceTypist(seat2Typist);
             advanceTypist(seat3Typist);
+
+            turnsElapsed++;
 
             // Print the current state of the race
             printRace();
@@ -228,7 +233,6 @@ public class TypingRace
     /**
      * Prints the current state of the race to the terminal.
      * Shows each typist's position along the passage, burnout state,
-     * and a WPM estimate based on current progress.
      */
     private void printRace()
     {
@@ -261,6 +265,7 @@ public class TypingRace
      *
      * Note: Ty forgot to show when a typist has just mistyped. That would
      * be a nice improvement — perhaps a [<] marker after their symbol.
+     * and a WPM estimate based on current progress.
      *
      * @param theTypist the typist whose lane to print
      */
@@ -290,6 +295,9 @@ public class TypingRace
         System.out.print('|');
         System.out.print(' ');
 
+        //WPM estimation calculator 
+        int estimatedWPM = (int)(theTypist.getProgress() * 60 / turnsElapsed); // rough estimate
+
         // Print name and accuracy
         if (theTypist.isBurntOut())
         {
@@ -300,7 +308,7 @@ public class TypingRace
         else
         {
             System.out.print(theTypist.getName()
-                + " (Accuracy: " + String.format("%.2f",theTypist.getAccuracy()) + ")");
+                + " (Accuracy: " + String.format("%.2f",theTypist.getAccuracy()) + ") WPM: "+estimatedWPM);
         }
     }
 
