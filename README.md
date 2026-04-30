@@ -40,6 +40,23 @@ Then run:
 java TypingRace
 ```
 
+Bugs Fixed by Jack Bew:
+
+- fixed mistype display in the lane
+- corrected tie handling in race finishing logic
+- rounded accuracy values for cleaner output
+
+
+Features added by Jack Bew:
+
+- typist accuracy changes during the race
+- burnout reduces accuracy
+- winner/tie outcomes increase accuracy
+- mistype and burnout markers are shown on screen
+- accuracy is rounded to 2 decimal places
+- WPM is estimated during the race
+
+
 ## Part 2 — GUI Simulation
 
 To be implemented as part of the coursework. Place all GUI-related source files in this folder. The graphical version is started by calling `startRaceGUI()`.
