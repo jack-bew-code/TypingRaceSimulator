@@ -73,8 +73,12 @@ public class RaceConfigGUI {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void startRaceGUI() {
         RaceConfigGUI setup = new RaceConfigGUI();
         setup.displaySetup();
+    }
+
+    public static void main(String[] args) {
+        startRaceGUI(); 
     }
 }
