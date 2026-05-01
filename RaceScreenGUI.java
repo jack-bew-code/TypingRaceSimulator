@@ -58,7 +58,7 @@ public class RaceScreenGUI {
             if (nightShift){baseAccuracy -=0.10;}
 
             typists[i] = new Typist((char) ('1'+i), "Typist "+ (i+1), baseAccuracy);
-
+            typists[i].setStartingAccuracy(baseAccuracy);
             typists[i].setLaneColor(colors[i]);
             typists[i].setAccessories(wristSupport[i], energyDrinks[i], headphones[i]);
 
@@ -129,7 +129,13 @@ public class RaceScreenGUI {
 
                     if (current.getProgress() >= passageLength) {
                         raceFinished = true;
-                        JOptionPane.showMessageDialog(frame, current.getName() + " WINS!", "Race Over", JOptionPane.INFORMATION_MESSAGE);
+                        current.setAccuracy(current.getAccuracy() + 0.02);
+
+                        raceTimer.stop();
+                        frame.dispose(); 
+                        
+                        // post race screen
+                        new PostRaceGUI(typists, turnsElapsed); 
                     }
                 }
                 if (raceFinished) {raceTimer.stop();}
@@ -174,6 +180,7 @@ public class RaceScreenGUI {
 
         if (Math.random() < currentAccuracy) {
             typist.typeCharacter();
+            typist.recordKeystroke();
         } 
 
 
@@ -184,10 +191,13 @@ public class RaceScreenGUI {
 
             typist.slideBack(slidePenalty);
             typist.setJustMistyped(true);
+            typist.recordMistype();
         }
 
         if (Math.random() < burnoutRiskCap * currentAccuracy * currentAccuracy) {
             typist.burnOut(3);
+            typist.recordBurnout();
+            typist.setAccuracy(typist.getAccuracy() - 0.01); 
         }
     }
 }

@@ -27,6 +27,12 @@ public class Typist
     private boolean hasWristSupport = false;
     private boolean hasEnergyDrink = false;
     private boolean hasHeadphones = false;
+
+    //race statistics
+    private int currentRaceKeystrokes = 0;
+    private int currentRaceMistypes = 0;
+    private int currentRaceBurnouts = 0;
+    private double startingAccuracy = 0;
     // Fields of class Typist
     // Hint: you will need six fields. Think carefully about their types.
     // One of them tracks how far along the passage the typist has reached.
@@ -262,5 +268,25 @@ public class Typist
     {
         typistSymbol = newSymbol;
     }
+
+    public void recordKeystroke() {
+        this.currentRaceKeystrokes++;
+    }
+
+    public void recordMistype() {
+        this.currentRaceMistypes++;
+        this.currentRaceKeystrokes++;
+    }
+
+    public void recordBurnout() {
+        this.currentRaceBurnouts++;
+    }
+
+    public int getKeystrokes() {return this.currentRaceKeystrokes;}
+    public int getMistypes() {return this.currentRaceMistypes;}
+    public int getBurnouts() {return this.currentRaceBurnouts;}
+    
+    public void setStartingAccuracy(double acc) {this.startingAccuracy = acc;}
+    public double getStartingAccuracy() {return this.startingAccuracy;}
 
 }
