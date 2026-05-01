@@ -1,3 +1,5 @@
+import java.awt.Color; 
+
 /**
  * Write a description of class Typist here.
  *
@@ -18,6 +20,19 @@ public class Typist
     private int typistBurnoutRemaining = 0; 
     private double typistAccuracy; 
     private boolean justMistyped = false;
+
+    private Color laneColor = new Color(0, 150, 0); //green
+    private String typingStyle = "Touch Typist";
+    private String keyboardType = "Membrane";
+    private boolean hasWristSupport = false;
+    private boolean hasEnergyDrink = false;
+    private boolean hasHeadphones = false;
+
+    //race statistics
+    private int currentRaceKeystrokes = 0;
+    private int currentRaceMistypes = 0;
+    private int currentRaceBurnouts = 0;
+    private double startingAccuracy = 0;
     // Fields of class Typist
     // Hint: you will need six fields. Think carefully about their types.
     // One of them tracks how far along the passage the typist has reached.
@@ -56,8 +71,52 @@ public class Typist
     public void burnOut(int turns)
     {
         if(turns<=0){return;}
+
+        if (this.hasWristSupport == true) {
+            turns = turns - 1; 
+            
+            if (turns < 1) {
+                turns = 1; 
+            }
+        }
+
         typistBurntOut = true;
         typistBurnoutRemaining = turns;
+    }
+
+    public void setLaneColor(Color c) {
+        this.laneColor = c;
+    }
+    public Color getLaneColor() {
+        return this.laneColor;
+    }
+
+    public void setTypingStyle(String style) {
+        this.typingStyle = style;
+    }
+    public String getTypingStyle() {
+        return this.typingStyle;
+    }
+
+    public void setKeyboardType(String keyboard) {
+        this.keyboardType = keyboard;
+    }
+    public String getKeyboardType() {
+        return this.keyboardType;
+    }
+
+    public void setAccessories(boolean wristSupport, boolean energyDrink, boolean headphones) {
+        this.hasWristSupport = wristSupport;
+        this.hasEnergyDrink = energyDrink;
+        this.hasHeadphones = headphones;
+    }
+    
+    public boolean getHasEnergyDrink() {
+        return this.hasEnergyDrink;
+    }
+    
+    public boolean getHasHeadphones() {
+        return this.hasHeadphones;
     }
 
     /**
@@ -209,5 +268,25 @@ public class Typist
     {
         typistSymbol = newSymbol;
     }
+
+    public void recordKeystroke() {
+        this.currentRaceKeystrokes++;
+    }
+
+    public void recordMistype() {
+        this.currentRaceMistypes++;
+        this.currentRaceKeystrokes++;
+    }
+
+    public void recordBurnout() {
+        this.currentRaceBurnouts++;
+    }
+
+    public int getKeystrokes() {return this.currentRaceKeystrokes;}
+    public int getMistypes() {return this.currentRaceMistypes;}
+    public int getBurnouts() {return this.currentRaceBurnouts;}
+    
+    public void setStartingAccuracy(double acc) {this.startingAccuracy = acc;}
+    public double getStartingAccuracy() {return this.startingAccuracy;}
 
 }

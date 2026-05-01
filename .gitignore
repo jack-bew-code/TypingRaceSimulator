@@ -1,2 +1,5 @@
 Part1/Typist.class
 Part1/TypingRace.class
+RaceScreenGUI.class
+.gitignore
+RaceConfigGUI.class

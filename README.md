@@ -7,7 +7,7 @@ Object Oriented Programming Project — ECS414U
 ```
 TypingRaceSimulator/
 ├── Part1/    # Textual simulation (Java, command-line)
-└── Part2/    # GUI simulation (to be completed)
+└── Part2/    # GUI simulation (Java Swing)
 ```
 
 ## Part 1 — Textual Simulation
@@ -59,15 +59,27 @@ Features added by Jack Bew:
 
 ## Part 2 — GUI Simulation
 
-To be implemented as part of the coursework. Place all GUI-related source files in this folder. The graphical version is started by calling `startRaceGUI()`.
+### How to Comple:
+```bash
+cd Part2
+javac *.java
+```
 
+### How to Run:
+```bash
+java RaceConfigGUI
+```
+
+GUI Features Implemented by Jack Bew:
+- Interactive Configuration: Custom passages, adjustable seat counts, and difficulty modifier(Autocorrect, Caffeine Mode, Night Shift).
+- Customisable Typists: Individual settings for Typing Style, Keyboard Type, Lane Color, and Accessories (Wrist Support, Energy Drinks, Headphones) with a built-in Attribute Guide.
+- Live Race Screen: Smooth simulation using javax.swing.Timer and dynamic text highlighting using JTextPane and StyledDocument.
+- Post-Race Hub (Tabbed Interface):
+- Analytics: Calculates actual WPM, True Accuracy %, and burnout tracking.
+- Comparison View: Visual bar chart comparing personal bests using JProgressBar.
+- Global Leaderboard: Points-based ranking system that persists across races, featuring dynamic titles and badges based on win streaks and clean races.
 ## Dependencies
 
 - Java Development Kit (JDK) 11 or higher
 - No external libraries required for Part 1
-- Part 2 may use Java Swing (included in standard JDK) or JavaFX
-
-## Notes
-
-- All code should compile and run using standard command-line tools without any IDE-specific configuration.
-- The starter code in Part1 was originally written by Ty Posaurus. It contains known issues — finding and fixing them is part of the coursework.
+- Java Swing (included in standard JDK) is used for Part 2. No external libraries are required.
