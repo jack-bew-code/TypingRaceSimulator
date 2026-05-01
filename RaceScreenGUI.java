@@ -1,13 +1,27 @@
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.text.*;
+import java.awt.event.ActionEvent;
+
 
 public class RaceScreenGUI {
     private JFrame frame;
     private JTextPane[] textPanes;
     private StyledDocument[] docs;
+    private Typist[] typists;
+
+    private Timer raceTimer;
+    private int passageLength;
+    private int turnsElapsed = 0;
+
+    private boolean autocorrectOn;
+    private boolean caffeineOn;
 
     public RaceScreenGUI(String passage, int numTypists, boolean autocorrect, boolean caffeine, boolean nightShift){
+        this.autocorrectOn = autocorrect;
+        this.caffeineOn = caffeine;
+
         frame = new JFrame("Typing Race - Live View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -17,12 +31,23 @@ public class RaceScreenGUI {
 
         textPanes = new JTextPane[numTypists];
         docs = new StyledDocument[numTypists];
+        typists = new Typist[numTypists];
+
         String passageText = getPassageText(passage);
+        this.passageLength = passageText.length();
         
         for (int i = 0; i < numTypists; i++) {
+            double baseAccuracy = 0.85 - (i*0.10);
+
+            if (nightShift){baseAccuracy -=0.10;}
+
+            typists[i] = new Typist((char) ('1'+i), "Typist "+ (i+1), baseAccuracy);
+
             JPanel singleLane = new JPanel(new BorderLayout());
             
-            singleLane.setBorder(BorderFactory.createTitledBorder("Typist " + (i + 1))); 
+            singleLane.setBorder(BorderFactory.createTitledBorder(
+                typists[i].getName()+" (Accuracy: "+String.format("%.2f",typists[i].getAccuracy()) + ")"
+            )); 
             
             textPanes[i] = new JTextPane();
             textPanes[i].setEditable(false);
@@ -37,12 +62,13 @@ public class RaceScreenGUI {
             
             JScrollPane scrollPane = new JScrollPane(textPanes[i]);
             singleLane.add(scrollPane, BorderLayout.CENTER);
-            
             lanesPanel.add(singleLane);
         }
         
         frame.add(lanesPanel, BorderLayout.CENTER);
         frame.setVisible(true);
+
+        startSimulation();
     }
 
     private String getPassageText(String choice){
@@ -60,9 +86,72 @@ public class RaceScreenGUI {
         doc.setCharacterAttributes(0, doc.getLength(), defaultStyle, true);
 
         Style completedStyle = pane.addStyle("Completed", null);
-        StyleConstants.setForeground(completedStyle, highlightColour); 
+        StyleConstants.setBackground(completedStyle, highlightColour); 
+        StyleConstants.setForeground(completedStyle, Color.WHITE);
         
         int safeProgress = Math.min(progress, doc.getLength());
         doc.setCharacterAttributes(0, safeProgress, completedStyle, false);
+    }
+
+    private void startSimulation(){
+        raceTimer = new Timer(200, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                turnsElapsed++;
+                boolean raceFinished = false;
+
+                for (int i = 0; i<typists.length;i++){
+                    Typist current = typists[i];
+                    advanceTypist(current);
+
+                    if(current.isBurntOut()){updateTextHighlighting(i, current.getProgress(), Color.RED);}
+                    else if (current.getJustMistyped()) {updateTextHighlighting(i, current.getProgress(), Color.ORANGE);}
+                    else{updateTextHighlighting(i, current.getProgress(), new Color(0, 150, 0));}
+
+                    if (current.getProgress() >= passageLength) {
+                        raceFinished = true;
+                        JOptionPane.showMessageDialog(frame, current.getName() + " WINS!", "Race Over", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                if (raceFinished) {raceTimer.stop();}
+            }
+        });
+        raceTimer.start();
+    }
+
+    private void advanceTypist(Typist typist){
+        if(typist.isBurntOut()){
+            typist.recoverFromBurnout();
+            return;
+        }
+
+        typist.setJustMistyped(false);
+
+        //caffeine mode 
+        double currentAccuracy = typist.getAccuracy();
+        double burnoutRiskCap = 0.05;
+        if (caffeineOn) {
+            if (turnsElapsed <= 10) {
+                currentAccuracy += 0.20; 
+            } else {
+                burnoutRiskCap = 0.15;
+            }
+        }
+
+        if (Math.random() < currentAccuracy) {
+            typist.typeCharacter();
+        } 
+        else if (Math.random() < (1.0 - currentAccuracy) * 0.3) {
+            int slidePenalty;
+            if (autocorrectOn){slidePenalty = 1;}
+            else{slidePenalty = 2;}
+
+            typist.slideBack(slidePenalty);
+            typist.setJustMistyped(true);
+        }
+
+        if (Math.random() < burnoutRiskCap * currentAccuracy * currentAccuracy) {
+            typist.burnOut(3);
+        }
     }
 }
