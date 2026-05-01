@@ -1,8 +1,8 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.text.*;
-import java.awt.event.ActionEvent;
 
 
 public class RaceScreenGUI {
@@ -18,7 +18,7 @@ public class RaceScreenGUI {
     private boolean autocorrectOn;
     private boolean caffeineOn;
 
-    public RaceScreenGUI(String passage, int numTypists, boolean autocorrect, boolean caffeine, boolean nightShift){
+    public RaceScreenGUI(String passage, int numTypists, boolean autocorrect, boolean caffeine, boolean nightShift, String[] styles, String[] keyboards, Color[] colors, boolean[] wristSupport, boolean[] energyDrinks, boolean[] headphones){
         this.autocorrectOn = autocorrect;
         this.caffeineOn = caffeine;
 
@@ -37,11 +37,30 @@ public class RaceScreenGUI {
         this.passageLength = passageText.length();
         
         for (int i = 0; i < numTypists; i++) {
-            double baseAccuracy = 0.85 - (i*0.10);
+            double baseAccuracy = 0.70; 
+
+            if (styles[i].equals("Touch Typist")) {
+                baseAccuracy = baseAccuracy + 0.15;
+            } else if (styles[i].equals("Hunt & Peck")) {
+                baseAccuracy = baseAccuracy - 0.10;
+            } else if (styles[i].equals("Voice-to-Text")) {
+                baseAccuracy = baseAccuracy + 0.05;
+            }
+
+            if (keyboards[i].equals("Mechanical")) {
+                baseAccuracy = baseAccuracy + 0.05;
+            } else if (keyboards[i].equals("Touchscreen")) {
+                baseAccuracy = baseAccuracy - 0.10;
+            } else if (keyboards[i].equals("Stenography")) {
+                baseAccuracy = baseAccuracy + 0.20; 
+            }
 
             if (nightShift){baseAccuracy -=0.10;}
 
             typists[i] = new Typist((char) ('1'+i), "Typist "+ (i+1), baseAccuracy);
+
+            typists[i].setLaneColor(colors[i]);
+            typists[i].setAccessories(wristSupport[i], energyDrinks[i], headphones[i]);
 
             JPanel singleLane = new JPanel(new BorderLayout());
             
@@ -106,7 +125,7 @@ public class RaceScreenGUI {
 
                     if(current.isBurntOut()){updateTextHighlighting(i, current.getProgress(), Color.RED);}
                     else if (current.getJustMistyped()) {updateTextHighlighting(i, current.getProgress(), Color.ORANGE);}
-                    else{updateTextHighlighting(i, current.getProgress(), new Color(0, 150, 0));}
+                    else{updateTextHighlighting(i, current.getProgress(), current.getLaneColor());}
 
                     if (current.getProgress() >= passageLength) {
                         raceFinished = true;
@@ -138,10 +157,27 @@ public class RaceScreenGUI {
             }
         }
 
+        //energy drink
+        if (typist.getHasEnergyDrink() == true) {
+            if (typist.getProgress() < (passageLength / 2)) {
+                currentAccuracy = currentAccuracy + 0.15;
+            } else {
+                currentAccuracy = currentAccuracy - 0.15;
+            }
+        }
+
+        //headphones
+        double mistypeChance = 0.3; 
+        if (typist.getHasHeadphones() == true) {
+            mistypeChance = 0.1;
+        }
+
         if (Math.random() < currentAccuracy) {
             typist.typeCharacter();
         } 
-        else if (Math.random() < (1.0 - currentAccuracy) * 0.3) {
+
+
+        else if (Math.random() < (1.0 - currentAccuracy) * mistypeChance) {
             int slidePenalty;
             if (autocorrectOn){slidePenalty = 1;}
             else{slidePenalty = 2;}

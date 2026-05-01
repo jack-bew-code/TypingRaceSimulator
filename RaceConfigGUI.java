@@ -4,7 +4,6 @@ import javax.swing.border.EmptyBorder;
 
 public class RaceConfigGUI {
     public void displaySetup(){
-        // main window
         JFrame frame = new JFrame("Typing Race Setup");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
@@ -13,13 +12,11 @@ public class RaceConfigGUI {
         JPanel formPanel = new JPanel(new GridLayout(6, 1)); 
         formPanel.setBorder(new EmptyBorder(20,20,20,20));
 
-        // --- Passage Selection ---
         String[] passageOptions = {"Short Passage", "Medium Passage", "Long Passage"};
         JComboBox<String> passageBox = new JComboBox<>(passageOptions);
         formPanel.add(new JLabel("Select Passage:"));
         formPanel.add(passageBox);
 
-        // --- Seat Count ---
         Integer[] typistOptions = {2,3,4,5,6};
         JComboBox<Integer> typistBox = new JComboBox<>(typistOptions);
         formPanel.add(new JLabel("Number of Typists:"));
@@ -27,7 +24,6 @@ public class RaceConfigGUI {
         formPanel.add(typistBox);
 
 
-        // --- Modifiers ---
         JPanel modifierPanel = new JPanel(new FlowLayout()); 
         JCheckBox autocorrectCheck = new JCheckBox("Autocorrect");
         JCheckBox caffeineCheck = new JCheckBox("Caffeine Mode");
@@ -56,10 +52,9 @@ public class RaceConfigGUI {
 
             frame.dispose();
 
-            new RaceScreenGUI(selectedPassage, numTypists, hasAutocorrect, hasCaffeine, hasNightShift);
+            new TypistConfigGUI(selectedPassage, numTypists, hasAutocorrect, hasCaffeine, hasNightShift);
         });
 
-        // 4. Add everything to the main frame
         frame.add(new JLabel("Welcome to the Typing Race!"), BorderLayout.NORTH);
         frame.add(formPanel, BorderLayout.CENTER);
         frame.add(startButton, BorderLayout.SOUTH);
