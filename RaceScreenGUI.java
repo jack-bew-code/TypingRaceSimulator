@@ -18,7 +18,7 @@ public class RaceScreenGUI {
     private boolean autocorrectOn;
     private boolean caffeineOn;
 
-    public RaceScreenGUI(String passage, int numTypists, boolean autocorrect, boolean caffeine, boolean nightShift, String[] styles, String[] keyboards, Color[] colors, boolean[] wristSupport, boolean[] energyDrinks, boolean[] headphones){
+    public RaceScreenGUI(String passage, int numTypists, boolean autocorrect, boolean caffeine, boolean nightShift, String[] names, String[] styles, String[] keyboards, Color[] colors, boolean[] wristSupport, boolean[] energyDrinks, boolean[] headphones){
         this.autocorrectOn = autocorrect;
         this.caffeineOn = caffeine;
 
@@ -57,7 +57,7 @@ public class RaceScreenGUI {
 
             if (nightShift){baseAccuracy -=0.10;}
 
-            typists[i] = new Typist((char) ('1'+i), "Typist "+ (i+1), baseAccuracy);
+            typists[i] = new Typist((char) ('1'+i), names[i], baseAccuracy);
             typists[i].setStartingAccuracy(baseAccuracy);
             typists[i].setLaneColor(colors[i]);
             typists[i].setAccessories(wristSupport[i], energyDrinks[i], headphones[i]);
@@ -93,7 +93,8 @@ public class RaceScreenGUI {
     private String getPassageText(String choice){
         if (choice.equals("Short Passage")) return "The quick brown fox jumps over the lazy dog.";
         else if (choice.equals("Medium Passage")) return "The sun set over the quiet town, and the streets began to glow with warm light. A soft breeze moved through the trees, and the evening felt calm and peaceful.";
-        return "The sun set over the quiet town, and the streets began to glow with warm light. A soft breeze moved through the trees, carrying the sound of distant voices and footsteps. In the park, the last few birds settled into the branches while the lamps slowly flickered on. The evening felt calm and peaceful, as if the whole town had paused for a moment to enjoy the fading light.";
+        else if(choice.equals("Long Passage")) return "The sun set over the quiet town, and the streets began to glow with warm light. A soft breeze moved through the trees, carrying the sound of distant voices and footsteps. In the park, the last few birds settled into the branches while the lamps slowly flickered on. The evening felt calm and peaceful, as if the whole town had paused for a moment to enjoy the fading light.";
+        return choice;
     }
 
     public void updateTextHighlighting(int typistIndex, int progress, Color highlightColour){
@@ -134,7 +135,6 @@ public class RaceScreenGUI {
                         raceTimer.stop();
                         frame.dispose(); 
                         
-                        // post race screen
                         new PostRaceGUI(typists, turnsElapsed); 
                     }
                 }

@@ -6,23 +6,36 @@ public class RaceConfigGUI {
     public void displaySetup(){
         JFrame frame = new JFrame("Typing Race Setup");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(600, 600);
         frame.setLayout(new BorderLayout());
 
-        JPanel formPanel = new JPanel(new GridLayout(6, 1)); 
+        JPanel formPanel = new JPanel(new GridLayout(8, 1)); 
         formPanel.setBorder(new EmptyBorder(20,20,20,20));
 
-        String[] passageOptions = {"Short Passage", "Medium Passage", "Long Passage"};
+        String[] passageOptions = {"Short Passage", "Medium Passage", "Long Passage", "Custom Passage"};
         JComboBox<String> passageBox = new JComboBox<>(passageOptions);
         formPanel.add(new JLabel("Select Passage:"));
         formPanel.add(passageBox);
+
+        formPanel.add(new JLabel("If Custom, type passage here:"));
+        JTextField customField = new JTextField("Type custom passage...");
+        customField.setEnabled(false); // Locked by default
+        formPanel.add(customField);
+
+        passageBox.addActionListener(e -> {
+            String choice = (String) passageBox.getSelectedItem();
+            if (choice.equals("Custom Passage")) {
+                customField.setEnabled(true); 
+            } else {
+                customField.setEnabled(false); 
+            }
+        });
 
         Integer[] typistOptions = {2,3,4,5,6};
         JComboBox<Integer> typistBox = new JComboBox<>(typistOptions);
         formPanel.add(new JLabel("Number of Typists:"));
         typistBox.setSelectedItem(3);
         formPanel.add(typistBox);
-
 
         JPanel modifierPanel = new JPanel(new FlowLayout()); 
         JCheckBox autocorrectCheck = new JCheckBox("Autocorrect");
@@ -37,18 +50,16 @@ public class RaceConfigGUI {
         JButton startButton = new JButton("Start Race!");
         startButton.addActionListener(e -> { 
             String selectedPassage = (String) passageBox.getSelectedItem();
+
+            if (selectedPassage.equals("Custom Passage")) {
+                selectedPassage = customField.getText();
+            }
+
             int numTypists = (int) typistBox.getSelectedItem();
 
             boolean hasAutocorrect = autocorrectCheck.isSelected();
             boolean hasCaffeine = caffeineCheck.isSelected();
             boolean hasNightShift = nightShiftCheck.isSelected();
-
-            System.out.println("--- Race Configuration Captured ---");
-            System.out.println("Passage: " + selectedPassage);
-            System.out.println("Typists: " + numTypists);
-            System.out.println("Autocorrect: " + hasAutocorrect);
-            System.out.println("Caffeine Mode: " + hasCaffeine);
-            System.out.println("Night Shift: " + hasNightShift);
 
             frame.dispose();
 
