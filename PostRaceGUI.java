@@ -38,7 +38,15 @@ public class PostRaceGUI {
                 wpm = (int) (wordsTyped / timeInMinutes);
             }
 
-            HistoryManager.saveRaceData(t.getName(), wpm);
+            int position = 1;
+            for (int j = 0; j < typists.length; j++) {
+                if (typists[j].getProgress() > t.getProgress()) {
+                    position++;
+                }
+            }
+
+            HistoryManager.saveRaceData(t.getName(), wpm, position, t.getBurnouts());
+
             int pb = HistoryManager.personalBests.get(t.getName());
 
             // true acc
@@ -118,6 +126,43 @@ public class PostRaceGUI {
         compareTab.add(updateButton);
 
         tabbedPane.addTab("Compare Typists", compareTab);
+
+        //tab 3 leaderboard
+
+        JPanel leaderboardTab = new JPanel(new BorderLayout());
+        JPanel leaderboardGrid = new JPanel(new GridLayout(allNames.length + 1, 4, 10, 10));
+        leaderboardGrid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        leaderboardGrid.add(boldLabel("Rank"));
+        leaderboardGrid.add(boldLabel("Typist Name"));
+        leaderboardGrid.add(boldLabel("Current Title"));
+        leaderboardGrid.add(boldLabel("Total Points"));
+
+        String[] sortedNames = allNames.clone();
+        //bubble sort names
+        for (int i = 0; i < sortedNames.length - 1; i++) {
+            for (int j = 0; j < sortedNames.length - i - 1; j++) {
+                int points1 = HistoryManager.totalPoints.get(sortedNames[j]);
+                int points2 = HistoryManager.totalPoints.get(sortedNames[j + 1]);
+                
+                if (points2 > points1) {
+                    String temp = sortedNames[j];
+                    sortedNames[j] = sortedNames[j + 1];
+                    sortedNames[j + 1] = temp;
+                }
+            }
+        }
+
+        for (int i = 0; i < sortedNames.length; i++) {
+            String name = sortedNames[i];
+            leaderboardGrid.add(new JLabel("#" + (i + 1))); // Rank
+            leaderboardGrid.add(new JLabel(name)); 
+            leaderboardGrid.add(new JLabel(HistoryManager.earnedTitles.get(name))); 
+            leaderboardGrid.add(new JLabel(String.valueOf(HistoryManager.totalPoints.get(name)))); // Points
+        }
+
+        leaderboardTab.add(leaderboardGrid, BorderLayout.NORTH);
+        tabbedPane.addTab("Global Leaderboard", leaderboardTab);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
 
